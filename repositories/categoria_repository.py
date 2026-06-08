@@ -3,11 +3,11 @@ from core.database import Database
 
 class CategoriaRepository:
 
-    def __init__(self,database: Database) -> None:
+    def __init__(self, database: Database) -> None:
         self.database = database
 
 
-    def cadastrar_categoria(self, nome: str):
+    def cadastrar_categoria(self, nome: str) -> int:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
@@ -19,11 +19,15 @@ class CategoriaRepository:
 
         conn.commit()
 
+        if cursor.lastrowid is None:
+            raise RuntimeError(
+            "Não foi possível obter o ID da categoria criada."
+            )
+
         return cursor.lastrowid
 
 
-
-    def buscar_por_nome(self,nome: str):
+    def buscar_por_nome(self, nome: str) -> dict | None:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
@@ -38,14 +42,14 @@ class CategoriaRepository:
         return dict(row) if row else None
     
 
-    def buscar_por_id(self, id: int):
+    def buscar_por_id(self, categoria_id: int) -> dict | None:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
 
         cursor.execute(
             "SELECT * FROM categorias WHERE id = ?",
-            (id,)
+            (categoria_id,)
         )
 
         row = cursor.fetchone()
@@ -53,7 +57,7 @@ class CategoriaRepository:
         return dict(row) if row else None
     
 
-    def listar_todas(self):
+    def listar_todas(self) -> list[dict]:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
