@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from core.dependencies import database
-from repositories.categoria_repository import CategoriaRepository
-from services.categoria_service import CategoriaService
-from schemas.categoria_schema import CategoriaCreate, CategoriaResponse 
+from repositories import CategoriaRepository
+from services import CategoriaService
+from schemas import CategoriaCreate, CategoriaResponse
 
 router = APIRouter(
     prefix="/categorias",

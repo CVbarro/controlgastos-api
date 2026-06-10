@@ -1,5 +1,5 @@
-from repositories.categoria_repository import CategoriaRepository
-from models.categoria import Categoria
+from repositories import CategoriaRepository
+from models import Categoria
 
 class CategoriaService:
     def __init__(self, repository: CategoriaRepository) -> None:

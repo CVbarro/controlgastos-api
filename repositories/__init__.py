@@ -1,0 +1,2 @@
+from .categoria_repository import CategoriaRepository
+from .gastos_repository import GastosRepository

@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from core.dependencies import database
-from repositories.gastos_repository import GastosRepository
-from repositories.categoria_repository import CategoriaRepository
-from services.gastos_service import GastoService
-from schemas.gastos_schema import GastoCreate, GastoResponse
+from repositories import GastosRepository, CategoriaRepository
+from services import GastoService
+from schemas import GastoCreate, GastoResponse
 
 router = APIRouter(
     prefix="/gastos",

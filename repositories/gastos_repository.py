@@ -1,5 +1,5 @@
 from core.database import Database
-from models.gastos import Gastos
+from models import Gastos
 from datetime import date
 
 class GastosRepository:

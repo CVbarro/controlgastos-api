@@ -1,5 +1,5 @@
 from core.database import Database
-from models.categoria import Categoria
+from models import Categoria
 
 class CategoriaRepository:
 
