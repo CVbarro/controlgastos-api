@@ -1,5 +1,5 @@
 from core.database import Database
-
+from models.categoria import Categoria
 
 class CategoriaRepository:
 
@@ -27,7 +27,7 @@ class CategoriaRepository:
         return cursor.lastrowid
 
 
-    def buscar_por_nome(self, nome: str) -> dict | None:
+    def buscar_por_nome(self, nome: str) -> Categoria | None:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
@@ -39,10 +39,10 @@ class CategoriaRepository:
 
         row = cursor.fetchone()
 
-        return dict(row) if row else None
+        return Categoria(id=row["id"], nome=row["nome"]) if row else None
     
 
-    def buscar_por_id(self, categoria_id: int) -> dict | None:
+    def buscar_por_id(self, categoria_id: int) -> Categoria | None:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
@@ -54,10 +54,10 @@ class CategoriaRepository:
 
         row = cursor.fetchone()
 
-        return dict(row) if row else None
+        return Categoria(id=row["id"], nome=row["nome"]) if row else None
     
 
-    def listar_todas(self) -> list[dict]:
+    def listar_todas(self) -> list[Categoria]:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
@@ -67,7 +67,7 @@ class CategoriaRepository:
         )
 
         return [
-            dict(row)
+           Categoria(id=row["id"], nome=row["nome"])
             for row in cursor.fetchall()
         ]
     
