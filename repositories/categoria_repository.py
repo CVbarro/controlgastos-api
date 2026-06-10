@@ -77,7 +77,7 @@ class CategoriaRepository:
         cursor = conn.cursor()
 
         cursor.execute(
-            "DELETE FROM gastos WHERE nome = ?",
+            "DELETE FROM categoria WHERE nome = ?",
             (nome,)
         )
 

@@ -10,11 +10,6 @@ class GastoService:
 
     
     def cadastrar(self, descricao: str, valor: float, data: str, categoria_id: int):
-        self.descricao = descricao
-        self.valor = valor
-        self.data = data
-        self.categoria_id = categoria_id
-
         categoria = (self.categoria_repository.buscar_por_id(categoria_id))
 
         if not categoria:

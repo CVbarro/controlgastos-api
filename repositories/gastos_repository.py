@@ -43,10 +43,12 @@ class GastosRepository:
 
         cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT * FROM gastos WHERE id = ?",
-            (gasto_id,)
-        )
+        cursor.execute("""
+        SELECT gastos.*, categorias.nome AS nome_categoria
+        FROM gastos
+        JOIN categorias ON gastos.categoria_id = categorias.id
+        WHERE gastos.id = ?
+        """, (gasto_id,))
 
         row = cursor.fetchone()
 
@@ -55,11 +57,13 @@ class GastosRepository:
     def listar_todos_gastos(self) -> list[dict]:
         conn = self.database.get_connection()
 
-        cursor = conn. cursor()
+        cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT * FROM gastos"
-        )
+        cursor.execute("""
+        SELECT gastos.*, categorias.nome AS nome_categoria
+        FROM gastos
+        JOIN categorias ON gastos.categoria_id = categorias.id
+        """)
 
         return [
             dict(row)

@@ -51,7 +51,7 @@ def buscar_categoria_id(
         raise HTTPException(status_code=404, detail="Categoria não encontrada")
     return categoria
 
-@router.delete("/{nome}", response_model=CategoriaResponse)
+@router.delete("/{nome}", status_code=200)
 def remover_categoria_por_nome(
     nome: str,
     service: CategoriaService = Depends(get_service)

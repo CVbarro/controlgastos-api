@@ -53,7 +53,7 @@ def listar_gasto_por_id(
         raise HTTPException(status_code=404, detail="Gasto não encontrado.")
     return gasto
 
-@router.delete("/{gasto_id}", response_model=GastoResponse)
+@router.delete("/{gasto_id}", status_code=200)
 def remover_gasto(
     gasto_id: int, service: GastoService = Depends(get_service)
     ):
