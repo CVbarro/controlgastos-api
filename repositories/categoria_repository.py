@@ -77,7 +77,7 @@ class CategoriaRepository:
         cursor = conn.cursor()
 
         cursor.execute(
-            "DELETE FROM categoria WHERE nome = ?",
+            "DELETE FROM categorias WHERE nome = ?",
             (nome,)
         )
 

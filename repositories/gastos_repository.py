@@ -1,11 +1,12 @@
 from core.database import Database
+from datetime import date
 
 class GastosRepository:
 
     def __init__(self, database: Database) -> None:
         self.database = database
 
-    def cadastrar_gasto(self, descricao: str, valor: float, data: str, categoria_id: int) -> int:
+    def cadastrar_gasto(self, descricao: str, valor: float, data: date, categoria_id: int) -> int:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()

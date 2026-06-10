@@ -1,5 +1,7 @@
 from repositories.gastos_repository import GastosRepository
 from repositories.categoria_repository import CategoriaRepository
+from datetime import date
+
 
 
 class GastoService:
@@ -9,7 +11,7 @@ class GastoService:
         self.categoria_repository = categoria_repository
 
     
-    def cadastrar(self, descricao: str, valor: float, data: str, categoria_id: int):
+    def cadastrar(self, descricao: str, valor: float, data: date, categoria_id: int):
         categoria = (self.categoria_repository.buscar_por_id(categoria_id))
 
         if not categoria:
