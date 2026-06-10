@@ -1,5 +1,6 @@
 from repositories.gastos_repository import GastosRepository
 from repositories.categoria_repository import CategoriaRepository
+from models.gastos import Gastos
 from datetime import date
 
 
@@ -24,10 +25,10 @@ class GastoService:
             categoria_id
         )
     
-    def buscar_gasto_id(self, gasto_id: int):
+    def buscar_gasto_id(self, gasto_id: int) -> Gastos | None:
         return self.repository.buscar_gasto_id(gasto_id)
     
-    def listar_gastos(self):
+    def listar_gastos(self) -> list[Gastos]:
         return self.repository.listar_todos_gastos()
     
     def remover(self, gasto_id: int):

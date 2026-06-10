@@ -10,6 +10,7 @@ class GastoCreate(BaseModel):
 
 
 class GastoResponse(BaseModel):
+    model_config = {"from_attributes": True}
     id: int
     descricao: str
     valor: float

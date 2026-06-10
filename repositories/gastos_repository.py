@@ -1,4 +1,5 @@
 from core.database import Database
+from models.gastos import Gastos
 from datetime import date
 
 class GastosRepository:
@@ -39,7 +40,7 @@ class GastosRepository:
         return cursor.lastrowid
     
 
-    def buscar_gasto_id(self, gasto_id: int) -> dict | None:
+    def buscar_gasto_id(self, gasto_id: int) -> Gastos | None:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
@@ -53,9 +54,16 @@ class GastosRepository:
 
         row = cursor.fetchone()
 
-        return dict(row) if row else None
+        return Gastos(
+            id=row["id"],
+            descricao=row["descricao"],
+            valor=row["valor"],
+            data=row["data"],
+            categoria_id=row["categoria_id"],
+            nome_categoria=row["nome_categoria"]
+        ) if row else None
     
-    def listar_todos_gastos(self) -> list[dict]:
+    def listar_todos_gastos(self) -> list[Gastos]:
         conn = self.database.get_connection()
 
         cursor = conn.cursor()
@@ -67,7 +75,14 @@ class GastosRepository:
         """)
 
         return [
-            dict(row)
+            Gastos(
+                id=row["id"],
+                descricao=row["descricao"],
+                valor=row["valor"],
+                data=row["data"],
+                categoria_id=row["categoria_id"],
+                nome_categoria=row["nome_categoria"]
+            )
             for row in cursor.fetchall()
         ]
     
