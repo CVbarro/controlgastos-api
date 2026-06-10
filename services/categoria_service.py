@@ -18,3 +18,10 @@ class CategoriaService:
     
     def buscar_id(self, categoria_id: int):
         return self.repository.buscar_por_id(categoria_id)
+    
+    def remover(self, nome: str):
+        removido = self.repository.remover_categoria(nome)
+
+        if not removido:
+            raise ValueError("Categoria não encontrada")
+        return True

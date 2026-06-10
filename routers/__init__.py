@@ -1,0 +1,1 @@
+from .categoria_router import router as categoria_router

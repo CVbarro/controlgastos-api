@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.dependencies import database
 from repositories.categoria_repository import CategoriaRepository
 from services.categoria_service import CategoriaService
-from schemas.categoria_schema import CategoriaCreate, CategoriaResponse  # ← adicionado
+from schemas.categoria_schema import CategoriaCreate, CategoriaResponse 
 
 router = APIRouter(
     prefix="/categorias",
@@ -50,3 +50,19 @@ def buscar_categoria_id(
     if not categoria:
         raise HTTPException(status_code=404, detail="Categoria não encontrada")
     return categoria
+
+@router.delete("/{nome}", response_model=CategoriaResponse)
+def remover_categoria_por_nome(
+    nome: str,
+    service: CategoriaService = Depends(get_service)
+):
+
+    try:
+        service.remover(nome)
+
+        return {
+             "mensagem": "Categoria removida com sucesso."
+        }
+    
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail= str(e))

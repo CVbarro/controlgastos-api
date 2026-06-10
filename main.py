@@ -1,6 +1,10 @@
-def main():
-    print("Hello from controlgastos-api!")
+from fastapi import FastAPI
 
+from routers import categoria_router
 
-if __name__ == "__main__":
-    main()
+app = FastAPI(
+    title="Controle de Gastos API",
+    version="1.0.0"
+)
+
+app.include_router(categoria_router)
