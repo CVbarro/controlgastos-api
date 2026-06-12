@@ -34,7 +34,7 @@ class GastosRepository:
 
         if cursor.lastrowid is None:
             raise RuntimeError(
-            "Não foi possível obter o ID do gasto criada."
+            "Não foi possível obter o ID do gasto criado."
             )
         
         return cursor.lastrowid
@@ -86,6 +86,50 @@ class GastosRepository:
             for row in cursor.fetchall()
         ]
     
+    def buscar_gastos_categoria(self, nome_categoria: str) -> list[Gastos]:
+        conn = self.database.get_connection()
+
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        SELECT gastos.*, categorias.nome AS nome_categoria
+        FROM gastos
+        JOIN categorias ON gastos.categoria_id = categorias.id
+        WHERE categorias.nome = ?
+        """, (nome_categoria,))
+
+
+        return [
+            Gastos(
+                id=row["id"],
+                descricao=row["descricao"],
+                valor=row["valor"],
+                data=row["data"],
+                categoria_id=row["categoria_id"],
+                nome_categoria=row["nome_categoria"]
+            )
+            for row in cursor.fetchall()
+        ]
+
+    
+    def atualizar_gasto(self, gasto_id: int, descricao: str, valor: float, data: date, categoria_id: int) -> bool:
+        conn = self.database.get_connection()
+
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            UPDATE gastos
+            SET descricao = ?, valor = ?, data = ?, categoria_id = ?
+            WHERE id = ?
+            """,
+            (descricao, valor, data, categoria_id, gasto_id)
+        )
+
+        conn.commit()
+
+        return cursor.rowcount > 0
+
     def remover_gasto(self, gasto_id: int) -> bool:
         conn = self.database.get_connection()
 

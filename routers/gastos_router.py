@@ -25,16 +25,12 @@ def get_service() -> GastoService:
 def cadastrar_gasto(
     gasto: GastoCreate,
     service: GastoService = Depends(get_service)
-):
-
-    gasto_id = service.cadastrar(
-        gasto.descricao,
-        gasto.valor,
-        gasto.data,
-        gasto.categoria_id
-    )
-
-    return service.buscar_gasto_id(gasto_id)
+    ):
+    try:
+        gasto_id = service.cadastrar(gasto.descricao, gasto.valor, gasto.data, gasto.categoria_id)
+        return service.buscar_gasto_id(gasto_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.get("/", response_model=list[GastoResponse])
 def listar_gastos(
@@ -51,6 +47,26 @@ def listar_gasto_por_id(
     if not gasto:
         raise HTTPException(status_code=404, detail="Gasto não encontrado.")
     return gasto
+
+@router.get("/categoria/{nome_categoria}", response_model=list[GastoResponse])
+def listar_gastos_por_categoria(
+    nome_categoria: str, service: GastoService = Depends(get_service)
+    ):
+    try:
+        return service.buscar_gastos_categoria(nome_categoria)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    
+@router.put("/{gasto_id}", response_model=GastoResponse)
+def atualizar_gasto(
+    gasto_id: int,
+    gasto: GastoCreate,
+    service: GastoService = Depends(get_service)
+):
+    try:
+        return service.atualizar(gasto_id, gasto.descricao, gasto.valor, gasto.data, gasto.categoria_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.delete("/{gasto_id}", status_code=200)
 def remover_gasto(
