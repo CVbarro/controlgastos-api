@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from routers import categoria_router,gastos_router
 
@@ -6,6 +7,16 @@ app = FastAPI(
     title="Controle de Gastos API",
     version="1.0.0"
 )
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.include_router(categoria_router)
 app.include_router(gastos_router)
