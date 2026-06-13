@@ -143,4 +143,34 @@ class GastosRepository:
         conn.commit()
 
         return cursor.rowcount > 0
+    
+    def remover_gastos_por_categoria(self, categoria_id: int) -> int:
+        conn = self.database.get_connection()
 
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "DELETE FROM gastos WHERE categoria_id = ?",
+            (categoria_id,)
+        )
+
+        conn.commit()
+
+        return cursor.rowcount  
+
+    def resumo_por_categoria(self) -> list[dict]:
+        conn = self.database.get_connection()
+
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT categorias.nome AS nome_categoria, SUM(gastos.valor) AS total
+            FROM gastos
+            JOIN categorias ON gastos.categoria_id = categorias.id
+            GROUP BY categorias.id, categorias.nome
+        """)
+
+        return [
+            {"nome_categoria": row["nome_categoria"], "total": row["total"]}
+            for row in cursor.fetchall()
+        ]

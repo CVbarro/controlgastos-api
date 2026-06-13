@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.dependencies import database
 from repositories import GastosRepository, CategoriaRepository
 from services import GastoService
-from schemas import GastoCreate, GastoResponse
+from schemas import GastoCreate, GastoResponse, ResumoCategoriaResponse
 
 router = APIRouter(
     prefix="/gastos",
@@ -82,3 +82,9 @@ def remover_gasto(
     
     except ValueError as e:
         raise HTTPException(status_code=404, detail= str(e))
+    
+@router.get("/resumo", response_model=list[ResumoCategoriaResponse])
+def resumo_gastos_por_categoria(
+    service: GastoService = Depends(get_service)
+):
+    return service.resumo_por_categoria()

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from core.dependencies import database
-from repositories import CategoriaRepository
+from repositories import CategoriaRepository, GastosRepository
 from services import CategoriaService
 from schemas import CategoriaCreate, CategoriaResponse
 
@@ -11,16 +11,20 @@ router = APIRouter(
 
 
 def get_service() -> CategoriaService:
-    return CategoriaService(CategoriaRepository(database))
-
+    categoria_repository = CategoriaRepository(database)
+    gastos_repository = GastosRepository(database)
+    return CategoriaService(categoria_repository, gastos_repository)
 
 @router.post("/", response_model=CategoriaResponse, status_code=201)
 def cadastrar_categoria(
     categoria: CategoriaCreate,
     service: CategoriaService = Depends(get_service)
 ):
-    categoria_id = service.cadastrar(categoria.nome) 
-    return service.buscar_id(categoria_id)           
+    try:
+        categoria_id = service.cadastrar(categoria.nome)
+        return service.buscar_id(categoria_id)
+    except ValueError as e:
+        raise HTTPException(status_code=409, detail=str(e)) 
 
 
 @router.get("/", response_model=list[CategoriaResponse])

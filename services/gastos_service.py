@@ -60,3 +60,6 @@ class GastoService:
         if not removido:
             raise ValueError("Gasto não encontrado.")
         return True
+    
+    def resumo_por_categoria(self) -> list[dict]:
+        return self.repository.resumo_por_categoria()
